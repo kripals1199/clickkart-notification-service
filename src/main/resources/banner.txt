@@ -1,0 +1,54 @@
+${AnsiColor.BRIGHT_BLUE}
+#############################################################################################
+#                                                                                           #
+#   ███╗   ██╗ ██████╗ ████████╗██╗███████╗██╗   ██╗                                        #
+#   ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝╚██╗ ██╔╝                                        #
+#   ██╔██╗ ██║██║   ██║   ██║   ██║█████╗   ╚████╔╝                                         #
+#   ██║╚██╗██║██║   ██║   ██║   ██║██╔══╝    ╚██╔╝                                          #
+#   ██║ ╚████║╚██████╔╝   ██║   ██║██║        ██║                                           #
+#   ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝╚═╝        ╚═╝                                           #
+#                                                                                           #
+#                               📧  NOTIFICATION SERVICE  📧                                #
+#                                                                                           #
+#############################################################################################
+
+${AnsiColor.BRIGHT_GREEN}
+┌────────────────────────────── APPLICATION ─────────────────────────────────────────────────┐
+│ Name             : ${spring.application.name}                                              │
+│ Version          : ${application.version}                                                  │
+│ Environment      : ${spring.profiles.active}                                               │
+│ Server Port      : ${server.port}                                                          │
+│ Context Path     : ${server.servlet.context-path:/}                                        │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
+
+${AnsiColor.BRIGHT_CYAN}
+┌────────────────────────────── PLATFORM ────────────────────────────────────────────────────┐
+│ Java Version     : ${java.version}                                                         │
+│ Spring Boot      : ${spring-boot.formatted-version}                                        │
+│ Operating System : ${os.name} ${os.version}                                                │
+│ User             : ${user.name}                                                            │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
+
+${AnsiColor.BRIGHT_YELLOW}
+┌────────────────────────────── BUILD INFO ──────────────────────────────────────────────────┐
+│ Build Time       : ${build.time}                                                           │
+│ Git Branch       : ${git.branch}                                                           │
+│ Git Commit       : ${git.commit.id.abbrev}                                                 │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
+
+${AnsiColor.BRIGHT_MAGENTA}
+┌────────────────────────────── FEATURES ────────────────────────────────────────────────────┐
+│ ✓ Password-Reset Notification Dispatch                                                     │
+│ ✓ OTP / Verification-Code Notification Dispatch                                            │
+│ ✓ Simulated Delivery (logged, not sent to a real SMTP/SMS provider)                        │
+│ ✓ Durable Delivery History (no raw secrets persisted)                                      │
+│ ✓ Correlation ID Enforcement on Every Inbound Request                                      │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
+
+${AnsiColor.BRIGHT_WHITE}
+#############################################################################################
+#                 🚀 ClickKart Notification Service Started Successfully 🚀                 #
+#                  Reliable • Scalable • Simulated Dispatch • Audit-Ready                   #
+#############################################################################################
+
+${AnsiColor.DEFAULT}
