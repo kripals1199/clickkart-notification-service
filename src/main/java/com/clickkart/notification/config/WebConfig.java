@@ -8,11 +8,13 @@ import com.clickkart.notification.filter.MdcCleanupFilter;
 import java.util.List;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
+@EnableConfigurationProperties(NotificationProperties.class)
 public class WebConfig {
 
     private static final List<String> CORRELATION_ID_EXEMPT_PATHS = List.of(
