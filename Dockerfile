@@ -20,7 +20,20 @@ USER clickkart
 ENV SPRING_PROFILES_ACTIVE=dev
 EXPOSE 8082
 
+# Probes /actuator/health/readiness, not /actuator/health - deliberately the same endpoint the
+# Kubernetes readiness probe uses, so "healthy" means the same thing locally and in a cluster.
+#
+# It matters here specifically: spring-boot-starter-mail auto-configures a MailHealthIndicator
+# that opens an SMTP connection, and it is part of the composite /actuator/health. Probing that
+# made an unreachable mail server mark the whole container unhealthy, even though the service was
+# fully able to accept requests and record them as FAILED. In a cluster that would be worse than
+# useless - a single SMTP outage would fail every replica's readiness at once and pull the entire
+# service out of its Service pool, turning a degraded feature into a total outage.
+#
+# The readiness group (readinessState,db - see clickkart-config-repository) already excludes mail
+# for exactly that reason; this aligns the container healthcheck with it. Mail status is still
+# reported under /actuator/health for diagnostics.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
-  CMD curl -fsS http://localhost:${SERVER_PORT:-8082}/actuator/health | grep -q '"status":"UP"' || exit 1
+  CMD curl -fsS http://localhost:${SERVER_PORT:-8082}/actuator/health/readiness | grep -q '"status":"UP"' || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
