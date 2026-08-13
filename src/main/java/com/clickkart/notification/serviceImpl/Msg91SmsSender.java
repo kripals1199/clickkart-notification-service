@@ -8,7 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import com.clickkart.notification.config.ProviderConfiguredConditions;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -31,7 +32,7 @@ import org.springframework.web.client.RestClient;
  */
 @Slf4j(topic = LoggerNames.DISPATCH)
 @Component
-@ConditionalOnProperty(name = "clickkart.notification.sms.msg91.auth-key")
+@Conditional(ProviderConfiguredConditions.Msg91Configured.class)
 public class Msg91SmsSender implements SmsSender {
 
     private static final String FLOW_PATH = "/api/v5/flow/";
@@ -40,9 +41,13 @@ public class Msg91SmsSender implements SmsSender {
     private final NotificationProperties.Sms.Msg91 config;
     private final RestClient restClient;
 
-    public Msg91SmsSender(NotificationProperties notificationProperties, RestClient.Builder restClientBuilder) {
+    // Builds its own RestClient rather than injecting RestClient.Builder: that builder is not an
+    // auto-configured bean in this application's context, so injecting it failed startup outright.
+    // Nothing here needs the shared builder's customizers - this client talks to exactly one
+    // external API with its own base URL and auth header.
+    public Msg91SmsSender(NotificationProperties notificationProperties) {
         this.config = notificationProperties.getSms().getMsg91();
-        this.restClient = restClientBuilder.baseUrl(config.getBaseUrl()).build();
+        this.restClient = RestClient.create(config.getBaseUrl());
     }
 
     @Override
