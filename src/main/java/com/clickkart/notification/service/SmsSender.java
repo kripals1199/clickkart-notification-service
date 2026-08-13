@@ -5,9 +5,9 @@ package com.clickkart.notification.service;
  * Transport for outbound SMS. Same active-one-of-two arrangement as {@link EmailSender}:
  *
  * <ul>
- *   <li>{@code Msg91SmsSender} - real delivery via MSG91's v5 flow API. Active when {@code
+ *   <li>{@code Msg91SmsSenderImpl} - real delivery via MSG91's v5 flow API. Active when {@code
  *       clickkart.notification.sms.msg91.auth-key} is set.</li>
- *   <li>{@code LoggingSmsSender} - writes the message to the DISPATCH log instead of sending.
+ *   <li>{@code LoggingSmsSenderImpl} - writes the message to the DISPATCH log instead of sending.
  *       Active otherwise.</li>
  * </ul>
  *

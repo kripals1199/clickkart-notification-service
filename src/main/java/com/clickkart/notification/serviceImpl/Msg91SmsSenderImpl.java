@@ -1,4 +1,4 @@
-// src/main/java/com/clickkart/notification/serviceImpl/Msg91SmsSender.java
+// src/main/java/com/clickkart/notification/serviceImpl/Msg91SmsSenderImpl.java
 package com.clickkart.notification.serviceImpl;
 
 import com.clickkart.notification.config.NotificationProperties;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestClient;
 
 /**
  * Real SMS delivery via MSG91's v5 flow API. Active only when
- * {@code clickkart.notification.sms.msg91.auth-key} is set; otherwise {@code LoggingSmsSender}
+ * {@code clickkart.notification.sms.msg91.auth-key} is set; otherwise {@code LoggingSmsSenderImpl}
  * takes over.
  *
  * <p><b>Indian transactional SMS is template-bound by law.</b> Under TRAI's DLT regime the
@@ -33,7 +33,7 @@ import org.springframework.web.client.RestClient;
 @Slf4j(topic = LoggerNames.DISPATCH)
 @Component
 @Conditional(ProviderConfiguredConditions.Msg91Configured.class)
-public class Msg91SmsSender implements SmsSender {
+public class Msg91SmsSenderImpl implements SmsSender {
 
     private static final String FLOW_PATH = "/api/v5/flow/";
     private static final String AUTH_HEADER = "authkey";
@@ -45,7 +45,7 @@ public class Msg91SmsSender implements SmsSender {
     // auto-configured bean in this application's context, so injecting it failed startup outright.
     // Nothing here needs the shared builder's customizers - this client talks to exactly one
     // external API with its own base URL and auth header.
-    public Msg91SmsSender(NotificationProperties notificationProperties) {
+    public Msg91SmsSenderImpl(NotificationProperties notificationProperties) {
         this.config = notificationProperties.getSms().getMsg91();
         this.restClient = RestClient.create(config.getBaseUrl());
     }

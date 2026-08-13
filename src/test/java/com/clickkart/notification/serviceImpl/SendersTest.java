@@ -26,7 +26,7 @@ class SendersTest {
     void smtpSenderBuildsTheMessageAndDelegatesToJavaMailSender() {
         NotificationProperties properties = new NotificationProperties();
         properties.getEmail().setFrom("no-reply@clickkart.local");
-        SmtpEmailSender sender = new SmtpEmailSender(javaMailSender, properties);
+        SmtpEmailSenderImpl sender = new SmtpEmailSenderImpl(javaMailSender, properties);
 
         sender.send("user@example.com", "Subject line", "Body with token abc123");
 
@@ -44,7 +44,7 @@ class SendersTest {
     void smtpSenderOmitsFromWhenNotConfiguredSoTheProviderDefaultApplies() {
         // Gmail rewrites a mismatched From anyway; leaving it unset lets the transport decide
         // rather than sending an address that would be silently replaced or rejected.
-        SmtpEmailSender sender = new SmtpEmailSender(javaMailSender, new NotificationProperties());
+        SmtpEmailSenderImpl sender = new SmtpEmailSenderImpl(javaMailSender, new NotificationProperties());
 
         sender.send("user@example.com", "Subject", "Body");
 
@@ -57,7 +57,7 @@ class SendersTest {
     void smtpSenderLetsDeliveryFailuresPropagate() {
         // Must NOT be swallowed: the caller records FAILED and returns 503 rather than telling
         // the user a reset link is on its way when nothing was sent.
-        SmtpEmailSender sender = new SmtpEmailSender(javaMailSender, new NotificationProperties());
+        SmtpEmailSenderImpl sender = new SmtpEmailSenderImpl(javaMailSender, new NotificationProperties());
         doThrow(new MailSendException("smtp refused")).when(javaMailSender).send(org.mockito.ArgumentMatchers.any(SimpleMailMessage.class));
 
         assertThatThrownBy(() -> sender.send("user@example.com", "s", "b"))
@@ -66,7 +66,7 @@ class SendersTest {
 
     @Test
     void loggingEmailSenderReportsItselfAsNotRealDelivery() {
-        LoggingEmailSender sender = new LoggingEmailSender();
+        LoggingEmailSenderImpl sender = new LoggingEmailSenderImpl();
         sender.warnNotRealDelivery();
         sender.send("user@example.com", "Subject", "Body");
         // The distinction callers rely on to know whether a message was genuinely delivered.
@@ -75,7 +75,7 @@ class SendersTest {
 
     @Test
     void loggingSmsSenderReportsItselfAsNotRealDelivery() {
-        LoggingSmsSender sender = new LoggingSmsSender();
+        LoggingSmsSenderImpl sender = new LoggingSmsSenderImpl();
         sender.warnNotRealDelivery();
         sender.send("9845550100", "042817");
         assertThat(sender.isRealDelivery()).isFalse();
@@ -86,7 +86,7 @@ class SendersTest {
         NotificationProperties properties = new NotificationProperties();
         properties.getSms().getMsg91().setAuthKey("key");
         properties.getSms().getMsg91().setTemplateId("template");
-        Msg91SmsSender sender = new Msg91SmsSender(properties);
+        Msg91SmsSenderImpl sender = new Msg91SmsSenderImpl(properties);
 
         assertThat(sender.isRealDelivery()).isTrue();
     }

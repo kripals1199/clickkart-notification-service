@@ -65,7 +65,7 @@ public class NotificationDispatchServiceImpl implements NotificationDispatchServ
 
         Runnable send = channel == NotificationChannel.SMS
                 // MSG91's DLT template supplies the surrounding wording, so only the code itself
-                // is sent as the template variable - see Msg91SmsSender.
+                // is sent as the template variable - see Msg91SmsSenderImpl.
                 ? () -> smsSender.send(recipient, request.rawOtp())
                 : () -> emailSender.send(recipient, notificationProperties.getEmail().getOtpSubject(), body);
 

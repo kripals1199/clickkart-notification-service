@@ -1,4 +1,4 @@
-// src/main/java/com/clickkart/notification/serviceImpl/SmtpEmailSender.java
+// src/main/java/com/clickkart/notification/serviceImpl/SmtpEmailSenderImpl.java
 package com.clickkart.notification.serviceImpl;
 
 import com.clickkart.notification.config.NotificationProperties;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Real email delivery. Active only when {@code spring.mail.host} is set - otherwise
- * {@code LoggingEmailSender} takes over and the service runs without credentials.
+ * {@code LoggingEmailSenderImpl} takes over and the service runs without credentials.
  *
  * <p>Deliberately does NOT catch {@code MailException}: a failed send must reach
  * {@code NotificationDispatchServiceImpl} so the attempt is recorded as {@code FAILED} and the
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Conditional(ProviderConfiguredConditions.SmtpConfigured.class)
-public class SmtpEmailSender implements EmailSender {
+public class SmtpEmailSenderImpl implements EmailSender {
 
     private final JavaMailSender javaMailSender;
     private final NotificationProperties notificationProperties;

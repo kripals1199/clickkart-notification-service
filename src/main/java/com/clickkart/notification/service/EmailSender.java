@@ -6,9 +6,9 @@ package com.clickkart.notification.service;
  * configuration at startup:
  *
  * <ul>
- *   <li>{@code SmtpEmailSender} - real delivery via JavaMailSender. Active when {@code
+ *   <li>{@code SmtpEmailSenderImpl} - real delivery via JavaMailSender. Active when {@code
  *       spring.mail.host} is set.</li>
- *   <li>{@code LoggingEmailSender} - writes the message to the DISPATCH log instead of sending.
+ *   <li>{@code LoggingEmailSenderImpl} - writes the message to the DISPATCH log instead of sending.
  *       Active when no SMTP host is configured, so the service still runs credential-free in
  *       dev.</li>
  * </ul>

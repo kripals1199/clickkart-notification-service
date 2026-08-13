@@ -1,4 +1,4 @@
-// src/main/java/com/clickkart/notification/serviceImpl/LoggingEmailSender.java
+// src/main/java/com/clickkart/notification/serviceImpl/LoggingEmailSenderImpl.java
 package com.clickkart.notification.serviceImpl;
 
 import com.clickkart.notification.constant.LoggerNames;
@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j(topic = LoggerNames.DISPATCH)
 @Component
-@ConditionalOnMissingBean(SmtpEmailSender.class)
-public class LoggingEmailSender implements EmailSender {
+@ConditionalOnMissingBean(SmtpEmailSenderImpl.class)
+public class LoggingEmailSenderImpl implements EmailSender {
 
     @PostConstruct
     void warnNotRealDelivery() {

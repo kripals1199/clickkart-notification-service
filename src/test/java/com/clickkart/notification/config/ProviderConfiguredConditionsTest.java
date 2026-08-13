@@ -62,7 +62,7 @@ class ProviderConfiguredConditionsTest {
 
     @Test
     void msg91IsNotConfiguredWhenAuthKeyIsEmpty() {
-        // This exact case previously activated Msg91SmsSender and failed application startup.
+        // This exact case previously activated Msg91SmsSenderImpl and failed application startup.
         var condition = new ProviderConfiguredConditions.Msg91Configured();
         assertThat(condition.matches(
                 contextWith("clickkart.notification.sms.msg91.auth-key", ""), null)).isFalse();
