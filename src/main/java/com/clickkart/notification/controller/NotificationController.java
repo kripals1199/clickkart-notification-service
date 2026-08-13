@@ -22,10 +22,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Called by other services (Auth Service today) to dispatch a password-reset link or a
- * numeric code (login OTP / email-mobile verification). Internal, service-to-service surface -
- * no user-facing endpoint reaches this directly, so there is deliberately no RBAC here, matching
- * this service's private-network-only deployment assumption (see {@code
+ * Called by other services (Auth Service today) to dispatch a password-reset
+ * link or a numeric code (login OTP / email-mobile verification). Internal,
+ * service-to-service surface - no user-facing endpoint reaches this directly,
+ * so there is deliberately no RBAC here, matching this service's
+ * private-network-only deployment assumption (see {@code
  * k8s/notification-service/service-and-scaling.yaml} - ClusterIP only).
  */
 @Tag(name = "Notifications", description = "Simulated dispatch of password-reset/OTP notifications")
@@ -33,33 +34,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class NotificationController {
 
-    private final NotificationDispatchService notificationDispatchService;
+	private final NotificationDispatchService notificationDispatchService;
 
-    /** 200 OK, {@code data: null}. Matches Auth Service's {@code NotificationServiceClient.sendPasswordResetNotification}. */
-    @Operation(summary = "Dispatch a password-reset notification")
-    @PostMapping(ApiPaths.PASSWORD_RESET)
-    public ResponseEntity<ApiResponse<Void>> passwordReset(
-            @RequestHeader(CorrelationIdFilter.CORRELATION_ID_HEADER) String correlationId,
-            @Valid @RequestBody PasswordResetNotificationRequest request,
-            HttpServletRequest httpRequest) {
-        notificationDispatchService.dispatchPasswordReset(correlationId, request);
-        return envelope(HttpStatus.OK.value(), httpRequest);
-    }
+	/**
+	 * 200 OK, {@code data: null}. Matches Auth Service's
+	 * {@code NotificationServiceClient.sendPasswordResetNotification}.
+	 */
+	@Operation(summary = "Dispatch a password-reset notification")
+	@PostMapping(ApiPaths.PASSWORD_RESET)
+	public ResponseEntity<ApiResponse<Void>> passwordReset(
+			@RequestHeader(CorrelationIdFilter.CORRELATION_ID_HEADER) String correlationId,
+			@Valid @RequestBody PasswordResetNotificationRequest request, HttpServletRequest httpRequest) {
+		notificationDispatchService.dispatchPasswordReset(correlationId, request);
+		return envelope(HttpStatus.OK.value(), httpRequest);
+	}
 
-    /** 200 OK, {@code data: null}. Matches Auth Service's {@code NotificationServiceClient.sendOtp}. */
-    @Operation(summary = "Dispatch an OTP/verification-code notification")
-    @PostMapping(ApiPaths.OTP)
-    public ResponseEntity<ApiResponse<Void>> otp(
-            @RequestHeader(CorrelationIdFilter.CORRELATION_ID_HEADER) String correlationId,
-            @Valid @RequestBody OtpNotificationRequest request,
-            HttpServletRequest httpRequest) {
-        notificationDispatchService.dispatchOtp(correlationId, request);
-        return envelope(HttpStatus.OK.value(), httpRequest);
-    }
+	/**
+	 * 200 OK, {@code data: null}. Matches Auth Service's
+	 * {@code NotificationServiceClient.sendOtp}.
+	 */
+	@Operation(summary = "Dispatch an OTP/verification-code notification")
+	@PostMapping(ApiPaths.OTP)
+	public ResponseEntity<ApiResponse<Void>> otp(
+			@RequestHeader(CorrelationIdFilter.CORRELATION_ID_HEADER) String correlationId,
+			@Valid @RequestBody OtpNotificationRequest request, HttpServletRequest httpRequest) {
+		notificationDispatchService.dispatchOtp(correlationId, request);
+		return envelope(HttpStatus.OK.value(), httpRequest);
+	}
 
-    private ResponseEntity<ApiResponse<Void>> envelope(int status, HttpServletRequest request) {
-        String correlationId = MDC.get(MdcKeys.CORRELATION_ID);
-        ApiResponse<Void> body = ApiResponse.success(status, null, request.getRequestURI(), correlationId);
-        return ResponseEntity.status(status).body(body);
-    }
+	private ResponseEntity<ApiResponse<Void>> envelope(int status, HttpServletRequest request) {
+		String correlationId = MDC.get(MdcKeys.CORRELATION_ID);
+		ApiResponse<Void> body = ApiResponse.success(status, null, request.getRequestURI(), correlationId);
+		return ResponseEntity.status(status).body(body);
+	}
 }

@@ -34,16 +34,13 @@ public class NotificationDispatchServiceImpl implements NotificationDispatchServ
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void dispatchPasswordReset(String correlationId, PasswordResetNotificationRequest request) {
-        String content = "Password reset requested. Use this token to complete the reset (expires "
-                + request.expiresAt() + "): " + request.rawResetToken();
+        String content = "Password reset requested. Use this token to complete the reset (expires "+ request.expiresAt() + "): " + request.rawResetToken();
 
         log.info(
                 "SIMULATED_DISPATCH type=PASSWORD_RESET channel=EMAIL recipient={} correlationId={} content=\"{}\"",
                 request.recipientEmail(), correlationId, content);
 
-        notificationRepository.save(new NotificationEntity(
-                request.recipientEmail(), NotificationChannel.EMAIL, NotificationType.PASSWORD_RESET,
-                NotificationStatus.SENT, correlationId));
+        notificationRepository.save(new NotificationEntity(request.recipientEmail(), NotificationChannel.EMAIL, NotificationType.PASSWORD_RESET, NotificationStatus.SENT, correlationId));
     }
 
     @Override
@@ -52,15 +49,13 @@ public class NotificationDispatchServiceImpl implements NotificationDispatchServ
         NotificationChannel channel = request.channel();
         String recipient = resolveRecipient(channel, request);
 
-        String content = "Your ClickKart verification code is " + request.rawOtp()
-                + " (expires " + request.expiresAt() + ")";
+        String content = "Your ClickKart verification code is " + request.rawOtp()+ " (expires " + request.expiresAt() + ")";
 
         log.info(
                 "SIMULATED_DISPATCH type=OTP channel={} recipient={} correlationId={} content=\"{}\"",
                 channel, recipient, correlationId, content);
 
-        notificationRepository.save(new NotificationEntity(
-                recipient, channel, NotificationType.OTP, NotificationStatus.SENT, correlationId));
+        notificationRepository.save(new NotificationEntity(recipient, channel, NotificationType.OTP, NotificationStatus.SENT, correlationId));
     }
 
     private String resolveRecipient(NotificationChannel channel, OtpNotificationRequest request) {
