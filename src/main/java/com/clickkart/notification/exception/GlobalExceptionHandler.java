@@ -1,4 +1,4 @@
-// src/main/java/com/clickkart/notification/exception/NotificationExceptionHandler.java
+// src/main/java/com/clickkart/notification/exception/GlobalExceptionHandler.java
 package com.clickkart.notification.exception;
 
 import com.clickkart.notification.constant.MdcKeys;
@@ -25,7 +25,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
  */
 @Slf4j
 @RestControllerAdvice
-public class NotificationExceptionHandler {
+public class GlobalExceptionHandler {
 
     private static final String DEFAULT_FIELD_ERROR_MESSAGE = "invalid value";
 
